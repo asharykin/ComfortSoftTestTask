@@ -3,9 +3,12 @@ package ru.comfortsoft.task.service;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class MinFinderService {
+
+    private final Random random = new Random();
 
     public Integer findNthMinimum(List<Integer> values, int N) {
         if (N > 0 && N <= values.size()) {
@@ -15,7 +18,7 @@ public class MinFinderService {
     }
 
     private Integer quickSelect(List<Integer> values, int left, int right, int n) {
-        int pivotIndex = partition(values, left, right);
+        int pivotIndex = randomPartition(values, left, right);
 
         if (n == pivotIndex) {
             return values.get(n);
@@ -24,6 +27,12 @@ public class MinFinderService {
         } else {
             return quickSelect(values, pivotIndex + 1, right, n);
         }
+    }
+
+    private int randomPartition(List<Integer> values, int left, int right) {
+        int randomIndex = left + random.nextInt(right - left + 1);
+        swap(values, randomIndex, right);
+        return partition(values, left, right);
     }
 
     private int partition(List<Integer> values, int left, int right) {
